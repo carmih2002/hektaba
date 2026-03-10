@@ -29,9 +29,11 @@ function renderHome() {
 
   if (exercises.length === 0) {
     empty.classList.remove('hidden');
+    $('exercises-label').style.display = 'none';
     return;
   }
   empty.classList.add('hidden');
+  $('exercises-label').style.display = 'block';
 
   exercises.forEach(ex => {
     const card = document.createElement('div');

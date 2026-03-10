@@ -50,15 +50,22 @@
         <span class="user-display" id="user-display"></span>
         <button class="btn-logout" id="btn-logout" title="יציאה">⎋ יציאה</button>
       </div>
-      <h1 class="app-title">✏️ הכתבה</h1>
+      <div class="app-title-wrap">
+        <h1 class="app-title">✏️ הכתבה</h1>
+      </div>
       <p class="app-subtitle">לימוד מילים בקלי קלות</p>
     </header>
 
     <div class="container">
-      <button class="btn btn-primary btn-large" id="btn-new-exercise">
-        <span class="btn-icon">➕</span> תרגיל חדש
+      <button class="new-exercise-btn" id="btn-new-exercise">
+        <span class="btn-icon">➕</span>
+        <div>
+          <div class="btn-label">תרגיל חדש</div>
+          <div class="btn-sub">צור רשימת מילים חדשה</div>
+        </div>
       </button>
 
+      <div class="exercises-section-label" id="exercises-label" style="display:none">התרגילים שלי</div>
       <div id="exercises-list" class="exercises-grid"></div>
 
       <div id="empty-state" class="empty-state hidden">
@@ -100,11 +107,11 @@
         <label>כיוון הלמידה</label>
         <div class="direction-picker" id="direction-picker">
           <button class="dir-btn active" data-dir="word-to-trans">
-            <span class="dir-arrow">מילה → תרגום</span>
+            <span class="dir-arrow">תרגום ← מילה</span>
             <small>רואה מילה, עונה בתרגום</small>
           </button>
           <button class="dir-btn" data-dir="trans-to-word">
-            <span class="dir-arrow">תרגום → מילה</span>
+            <span class="dir-arrow">תרגום ← מילה</span>
             <small>רואה תרגום, עונה במילה</small>
           </button>
         </div>
@@ -134,22 +141,22 @@
       <h3 class="section-label">בחר משחק</h3>
       <div class="games-grid">
         <button class="game-card" data-game="flashcard">
-          <div class="game-icon">🃏</div>
+          <div class="game-icon-wrap"><div class="game-icon">🃏</div></div>
           <div class="game-name">כרטיסיות</div>
           <div class="game-desc">הפוך והכר</div>
         </button>
         <button class="game-card" data-game="typeword">
-          <div class="game-icon">⌨️</div>
+          <div class="game-icon-wrap"><div class="game-icon">⌨️</div></div>
           <div class="game-name">כתיבה</div>
           <div class="game-desc">כתוב את המילה</div>
         </button>
         <button class="game-card" data-game="scramble">
-          <div class="game-icon">🔀</div>
+          <div class="game-icon-wrap"><div class="game-icon">🔀</div></div>
           <div class="game-name">פיצוץ מילים</div>
           <div class="game-desc">סדר את האותיות</div>
         </button>
         <button class="game-card" data-game="multiplechoice">
-          <div class="game-icon">🎯</div>
+          <div class="game-icon-wrap"><div class="game-icon">🎯</div></div>
           <div class="game-name">בחירה מרובה</div>
           <div class="game-desc">בחר את התשובה</div>
         </button>
