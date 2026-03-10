@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>הכתבה - לימוד מילים</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ====== AUTH SCREEN ====== -->
+  <div id="screen-auth" class="screen active">
+    <div class="auth-bg">
+      <div class="auth-container">
+        <div class="auth-header">
+          <div class="auth-logo">✏️</div>
+          <h1>הכתבה</h1>
+          <p>לימוד מילים בקלי קלות</p>
+        </div>
+
+        <div id="auth-loading" class="auth-loading hidden">
+          <div class="auth-spinner"></div>
+          <p>טוען...</p>
+        </div>
+
+        <div id="auth-card" class="auth-card">
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="tab-login">כניסה</button>
+            <button class="auth-tab" id="tab-register">הרשמה</button>
+          </div>
+          <div class="auth-form-wrap">
+            <input type="email"    id="auth-email"            class="auth-input" placeholder="כתובת אימייל" autocomplete="email" />
+            <input type="password" id="auth-password"         class="auth-input" placeholder="סיסמה" autocomplete="current-password" />
+            <div id="auth-password-confirm-wrap" class="hidden">
+              <input type="password" id="auth-password-confirm" class="auth-input" placeholder="אימות סיסמה" autocomplete="new-password" />
+            </div>
+            <div id="auth-error" class="auth-error hidden"></div>
+            <button class="btn btn-primary btn-auth" id="btn-auth-submit">כניסה</button>
+            <button class="btn-forgot" id="btn-forgot">שכחתי סיסמה</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== HOME SCREEN ====== -->
+  <div id="screen-home" class="screen">
+    <header class="app-header">
+      <div class="app-header-top">
+        <span class="user-display" id="user-display"></span>
+        <button class="btn-logout" id="btn-logout" title="יציאה">⎋ יציאה</button>
+      </div>
+      <h1 class="app-title">✏️ הכתבה</h1>
+      <p class="app-subtitle">לימוד מילים בקלי קלות</p>
+    </header>
+
+    <div class="container">
+      <button class="btn btn-primary btn-large" id="btn-new-exercise">
+        <span class="btn-icon">➕</span> תרגיל חדש
+      </button>
+
+      <div id="exercises-list" class="exercises-grid"></div>
+
+      <div id="empty-state" class="empty-state hidden">
+        <div class="empty-icon">📚</div>
+        <p>אין עדיין תרגילים</p>
+        <p class="empty-sub">לחץ על "תרגיל חדש" כדי להתחיל!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== CREATE / EDIT EXERCISE SCREEN ====== -->
+  <div id="screen-create" class="screen">
+    <header class="screen-header">
+      <button class="btn-back" id="btn-back-create">‹ חזרה</button>
+      <h2 id="create-title">תרגיל חדש</h2>
+      <button class="btn btn-save" id="btn-save-exercise">שמור</button>
+    </header>
+
+    <div class="container">
+      <div class="form-group">
+        <label>שם התרגיל</label>
+        <input type="text" id="exercise-name" placeholder="למשל: יחידה 3 – בבית" />
+      </div>
+      <div class="form-group">
+        <label>שפה</label>
+        <div class="language-picker" id="language-picker">
+          <button class="lang-btn active" data-lang="עברית">🇮🇱 עברית</button>
+          <button class="lang-btn" data-lang="English">🇺🇸 English</button>
+          <button class="lang-btn" data-lang="العربية">🇸🇦 العربية</button>
+          <button class="lang-btn" data-lang="Français">🇫🇷 Français</button>
+          <button class="lang-btn" data-lang="Español">🇪🇸 Español</button>
+          <button class="lang-btn" data-lang="Deutsch">🇩🇪 Deutsch</button>
+          <button class="lang-btn" data-lang="other">🌐 אחר</button>
+        </div>
+        <input type="text" id="custom-language" class="hidden" placeholder="הקלד שפה..." />
+      </div>
+
+      <div class="form-group">
+        <label>כיוון הלמידה</label>
+        <div class="direction-picker" id="direction-picker">
+          <button class="dir-btn active" data-dir="word-to-trans">
+            <span class="dir-arrow">מילה → תרגום</span>
+            <small>רואה מילה, עונה בתרגום</small>
+          </button>
+          <button class="dir-btn" data-dir="trans-to-word">
+            <span class="dir-arrow">תרגום → מילה</span>
+            <small>רואה תרגום, עונה במילה</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="words-section">
+        <div class="words-header">
+          <h3>רשימת מילים</h3>
+          <button class="btn btn-add-word" id="btn-add-word">+ הוסף מילה</button>
+        </div>
+        <div id="words-list" class="words-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== EXERCISE DETAIL SCREEN ====== -->
+  <div id="screen-detail" class="screen">
+    <header class="screen-header">
+      <button class="btn-back" id="btn-back-detail">‹ חזרה</button>
+      <h2 id="detail-title"></h2>
+      <button class="btn btn-icon-only" id="btn-edit-exercise" title="עריכה">✏️</button>
+    </header>
+
+    <div class="container">
+      <div class="detail-stats" id="detail-stats"></div>
+
+      <h3 class="section-label">בחר משחק</h3>
+      <div class="games-grid">
+        <button class="game-card" data-game="flashcard">
+          <div class="game-icon">🃏</div>
+          <div class="game-name">כרטיסיות</div>
+          <div class="game-desc">הפוך והכר</div>
+        </button>
+        <button class="game-card" data-game="typeword">
+          <div class="game-icon">⌨️</div>
+          <div class="game-name">כתיבה</div>
+          <div class="game-desc">כתוב את המילה</div>
+        </button>
+        <button class="game-card" data-game="scramble">
+          <div class="game-icon">🔀</div>
+          <div class="game-name">פיצוץ מילים</div>
+          <div class="game-desc">סדר את האותיות</div>
+        </button>
+        <button class="game-card" data-game="multiplechoice">
+          <div class="game-icon">🎯</div>
+          <div class="game-name">בחירה מרובה</div>
+          <div class="game-desc">בחר את התשובה</div>
+        </button>
+      </div>
+
+      <h3 class="section-label">מילים ברשימה</h3>
+      <div id="detail-words-list" class="detail-words"></div>
+
+      <button class="btn btn-danger" id="btn-delete-exercise">🗑️ מחק תרגיל</button>
+    </div>
+  </div>
+
+  <!-- ====== FLASHCARD GAME SCREEN ====== -->
+  <div id="screen-flashcard" class="screen">
+    <header class="screen-header game-header">
+      <button class="btn-back" id="btn-back-flashcard">‹ יציאה</button>
+      <h2>🃏 כרטיסיות</h2>
+      <div class="game-header-right">
+        <button class="btn-star-game" id="btn-star-flashcard" title="סמן בכוכב">☆</button>
+        <div class="progress-text" id="flashcard-progress">1 / 10</div>
+      </div>
+    </header>
+    <div class="container game-container">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="flashcard-bar"></div>
+      </div>
+      <div class="flashcard-wrap">
+        <div class="flashcard" id="flashcard" tabindex="0">
+          <div class="flashcard-front">
+            <div class="card-label" id="flashcard-front-label">מילה</div>
+            <div class="card-word" id="flashcard-word"></div>
+          </div>
+          <div class="flashcard-back">
+            <div class="card-label" id="flashcard-back-label">תרגום</div>
+            <div class="card-word" id="flashcard-trans"></div>
+          </div>
+        </div>
+        <p class="flip-hint">לחץ על הכרטיסייה להפיכה</p>
+      </div>
+      <div class="flashcard-btns">
+        <button class="btn btn-wrong" id="btn-fc-wrong">❌ עוד אפעם</button>
+        <button class="btn btn-correct" id="btn-fc-correct">✅ ידעתי!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== TYPE WORD GAME SCREEN ====== -->
+  <div id="screen-typeword" class="screen">
+    <header class="screen-header game-header">
+      <button class="btn-back" id="btn-back-typeword">‹ יציאה</button>
+      <h2>⌨️ כתיבה</h2>
+      <div class="game-header-right">
+        <button class="btn-star-game" id="btn-star-typeword" title="סמן בכוכב">☆</button>
+        <div class="progress-text" id="typeword-progress">1 / 10</div>
+      </div>
+    </header>
+    <div class="container game-container">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="typeword-bar"></div>
+      </div>
+      <div class="typeword-card">
+        <div class="card-label">תרגם את המילה</div>
+        <div class="card-hint" id="typeword-hint"></div>
+        <div class="type-input-wrap">
+          <input type="text" id="typeword-input" class="type-input" placeholder="כתוב כאן..." autocomplete="off" autocorrect="off" spellcheck="false" />
+          <button class="btn btn-check" id="btn-typeword-check">בדוק ↵</button>
+        </div>
+        <div class="type-feedback hidden" id="typeword-feedback"></div>
+        <button class="btn btn-next hidden" id="btn-typeword-next">הבא ←</button>
+      </div>
+      <div class="score-display">
+        ✅ <span id="typeword-score">0</span> נכון &nbsp;|&nbsp; ❌ <span id="typeword-wrong">0</span> טעות
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SCRAMBLE GAME SCREEN ====== -->
+  <div id="screen-scramble" class="screen">
+    <header class="screen-header game-header">
+      <button class="btn-back" id="btn-back-scramble">‹ יציאה</button>
+      <h2>🔀 פיצוץ מילים</h2>
+      <div class="game-header-right">
+        <button class="btn-star-game" id="btn-star-scramble" title="סמן בכוכב">☆</button>
+        <div class="progress-text" id="scramble-progress">1 / 10</div>
+      </div>
+    </header>
+    <div class="container game-container">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="scramble-bar"></div>
+      </div>
+      <div class="scramble-card">
+        <div class="card-label">סדר את האותיות</div>
+        <div class="scramble-hint" id="scramble-hint"></div>
+        <div class="scramble-letters" id="scramble-letters"></div>
+        <div class="scramble-answer" id="scramble-answer"></div>
+        <div class="scramble-actions">
+          <button class="btn btn-outline" id="btn-scramble-clear">נקה</button>
+          <button class="btn btn-check" id="btn-scramble-check">בדוק</button>
+        </div>
+        <div class="type-feedback hidden" id="scramble-feedback"></div>
+        <button class="btn btn-next hidden" id="btn-scramble-next">הבא ←</button>
+      </div>
+      <div class="score-display">
+        ✅ <span id="scramble-score">0</span> נכון &nbsp;|&nbsp; ❌ <span id="scramble-wrong">0</span> טעות
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== MULTIPLE CHOICE GAME SCREEN ====== -->
+  <div id="screen-multiplechoice" class="screen">
+    <header class="screen-header game-header">
+      <button class="btn-back" id="btn-back-multiplechoice">‹ יציאה</button>
+      <h2>🎯 בחירה מרובה</h2>
+      <div class="game-header-right">
+        <button class="btn-star-game" id="btn-star-mc" title="סמן בכוכב">☆</button>
+        <div class="progress-text" id="mc-progress">1 / 10</div>
+      </div>
+    </header>
+    <div class="container game-container">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="mc-bar"></div>
+      </div>
+      <div class="mc-card">
+        <div class="card-label">מה הפירוש?</div>
+        <div class="mc-word" id="mc-word"></div>
+        <div class="mc-options" id="mc-options"></div>
+      </div>
+      <div class="score-display">
+        ✅ <span id="mc-score">0</span> נכון &nbsp;|&nbsp; ❌ <span id="mc-wrong">0</span> טעות
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== RESULTS SCREEN ====== -->
+  <div id="screen-results" class="screen">
+    <div class="container results-container">
+      <div class="results-emoji" id="results-emoji">🏆</div>
+      <h2 class="results-title" id="results-title">כל הכבוד!</h2>
+      <div class="results-score" id="results-score"></div>
+      <div class="results-stars" id="results-stars"></div>
+      <div class="results-btns">
+        <button class="btn btn-primary" id="btn-results-again">🔄 שוב</button>
+        <button class="btn btn-secondary" id="btn-results-games">🎮 משחקים</button>
+        <button class="btn btn-outline" id="btn-results-home">🏠 בית</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== DELETE CONFIRM MODAL ====== -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <h3>מחיקת תרגיל</h3>
+      <p id="modal-message">האם אתה בטוח שברצונך למחוק את התרגיל?</p>
+      <div class="modal-btns">
+        <button class="btn btn-danger" id="btn-modal-confirm">מחק</button>
+        <button class="btn btn-outline" id="btn-modal-cancel">ביטול</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/games.js"></script>
+</body>
+</html>
